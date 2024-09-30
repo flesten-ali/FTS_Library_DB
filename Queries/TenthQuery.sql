@@ -2,15 +2,19 @@ CREATE FUNCTION fn_GetAgeGroup (@DateOfBirth DATE)
 RETURNS NVARCHAR(8)
 AS
 BEGIN
-	DECLARE @AgeGroup NVARCHAR(8) = 0;
+	DECLARE @AgeGroup NVARCHAR(8);
+	DECLARE @DateDiff INT = DateDiff(Year, @DateOfBirth, GETDATE());
 
-	SELECT @AgeGroup = CASE 
-			WHEN DateDiff(Year, @DateOfBirth, GETDATE()) BETWEEN 0 AND 10  THEN '(0,10)'
-			WHEN DateDiff(Year, @DateOfBirth, GETDATE()) BETWEEN 11 AND 20 THEN '(11,20)'
-			WHEN DateDiff(Year, @DateOfBirth, GETDATE()) BETWEEN 21	AND 30 THEN '(21,30)'
-			WHEN DateDiff(Year, @DateOfBirth, GETDATE()) BETWEEN 31	AND 40 THEN '(31,40)'
+	IF MONTH(GETDATE()) < MONTH(@DateOfBirth)
+	   SET @DateDiff = @DateDiff - 1;
+	   
+	SET @AgeGroup = CASE 
+			WHEN @DateDiff BETWEEN 0  AND 10  THEN '(0,10)'
+			WHEN @DateDiff BETWEEN 11 AND 20 THEN '(11,20)'
+			WHEN @DateDiff BETWEEN 21 AND 30 THEN '(21,30)'
+			WHEN @DateDiff BETWEEN 31 AND 40 THEN '(31,40)'
 			ELSE '+41'
-			END
+	END
 
 	RETURN @AgeGroup
 END
@@ -49,4 +53,5 @@ HAVING
 ORDER BY
    Age
 
+ 
  

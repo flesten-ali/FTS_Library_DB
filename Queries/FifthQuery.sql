@@ -7,6 +7,8 @@ CREATE PROCEDURE sp_AddNewBorrower (
 	)
 AS
 BEGIN
+	DECLARE @NewBorrowerID INT;
+
 	IF NOT EXISTS 
 	(   SELECT 1
 		FROM Borrowers
@@ -14,10 +16,8 @@ BEGIN
 	)
 
 		BEGIN
-			INSERT INTO Borrowers
+			INSERT INTO Borrowers(FirstName,LastName,Email,DateOfBirth,MembershipDate)
 			VALUES (@FirstName, @LastName, @Email, @DateOfBirth, @MembershipDate)
-
-			DECLARE @NewBorrowerID INT;
 
 			SELECT @NewBorrowerID = SCOPE_IDENTITY()
 			FROM Borrowers;

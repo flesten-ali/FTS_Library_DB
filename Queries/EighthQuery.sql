@@ -9,4 +9,7 @@ JOIN
 JOIN
    Books AS b ON b.BookID = l.BookID
 WHERE 
-   DateReturned > DueDate AND DATEDIFF(DAY, DueDate, DateReturned) > 30
+ (DateReturned = NULL AND GETDATE() > DueDate AND DATEDIFF(DAY, DueDate, GETDATE()) > 30)
+  OR 
+ (DateReturned > DueDate AND DATEDIFF(DAY, DueDate, DateReturned) > 30)
+ 

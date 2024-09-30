@@ -1,8 +1,3 @@
-create table #TmpTableForCTE (
-   BorrowerID int ,
-   Borrowingfrequency int
-);
-
 WITH FindBorrowingfrequency
 AS (
 	SELECT 
@@ -12,12 +7,13 @@ AS (
 	   Loans
 	GROUP BY
 	   BorrowerID
-	)
+)
 
-insert into #TmpTableForCTE(BorrowerID ,Borrowingfrequency)
 select 
    BorrowerID ,
    Borrowingfrequency
+into 
+  #TmpTableForCTE
 from
    FindBorrowingfrequency
 
@@ -33,6 +29,4 @@ FROM
 JOIN
    Borrowers AS br ON br.BorrowerID = f.BorrowerID
 
-
-
- 
+drop table #TmpTableForCTE;

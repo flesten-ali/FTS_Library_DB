@@ -3,9 +3,7 @@ AS
 BEGIN
 	IF @StartDate > @EndDate
 	BEGIN
-		RAISERROR ('End Date Must be more than or equal Start Date', 11, 1)
-
-		RETURN;
+		THROW 60001, 'End Date Must be more than or equal Start Date',1;
 	END
 
 	SELECT 
@@ -23,5 +21,6 @@ BEGIN
 	WHERE
 	   DateBorrowed BETWEEN @StartDate AND @EndDate
 END
+
 
 EXEC sp_BorrowedBooksReport '2026-12-12', '2024-01-12'
